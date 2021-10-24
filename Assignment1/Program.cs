@@ -18,9 +18,9 @@ namespace Asg1
             ProgramStopwatch.startWatch();
 
             DirWalker dirWalker = new DirWalker();
-            dirWalker.walk(@"C:\SMU\Software Developement\Sample Data");
+            dirWalker.walk(@"C:\SMU\Software Developement\Sample Data\Sample Data");
             dirWalker.writeCSVFile();
-            
+            log.Info("Total execution time: " + ProgramStopwatch.stopWatchAndGetTime());
             Console.WriteLine("RunTime " + ProgramStopwatch.stopWatchAndGetTime());
         }
     }
@@ -55,7 +55,6 @@ namespace Asg1
             }
             stopWatch.Stop();
             TimeSpan ts = stopWatch.Elapsed;
-            Console.WriteLine("Elapsed time {0} ms", stopWatch.ElapsedMilliseconds);
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
             ts.Hours, ts.Minutes, ts.Seconds,
             ts.Milliseconds / 10);

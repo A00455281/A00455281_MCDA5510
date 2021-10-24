@@ -26,31 +26,44 @@ namespace Asg1
                     walk(dirpath);
                 }
             }
-            string[] fileList = Directory.GetFiles(path);
+            string[] fileList = Directory.GetFiles(path, "*.csv");
             this.allFileList.AddRange(fileList);
         }
 
         public void writeCSVFile()
         {
-            int totalInvalidRecords = 0;
-            Console.WriteLine("Total Files in Dir:" + this.allFileList.Count);
-            using (FileStream fs = new FileStream(@"C:\SMU\Software Developement\test.csv", FileMode.Append, FileAccess.Write))
-            using (StreamWriter sw = new StreamWriter(fs))
+            try
             {
-                sw.WriteLine("First Name, Last Name, Street Number, Street, City, Province, Country, Postal Code, Phone Number, email Address");
-                foreach (string filePath in this.allFileList)
+                int totalInvalidRecords = 0;
+                int totalValidRecords = 0;
+                Console.WriteLine("Total Files in Dir:" + this.allFileList.Count);
+                using (FileStream fs = new FileStream(@"C:\SMU\Software Developement\test.csv", FileMode.Append, FileAccess.Write))
+                using (StreamWriter sw = new StreamWriter(fs))
                 {
-                    //**** Processing CSV *******
-                    ParserData parserData = new SimpleCSVParser().parse(filePath);
-                    totalInvalidRecords += parserData.totalInvalidCount;
-                    foreach (string data in parserData.data)
+                    sw.WriteLine("First Name, Last Name, Street Number, Street, City, Province, Country, Postal Code, Phone Number, email Address");
+                    foreach (string filePath in this.allFileList)
                     {
-                        sw.WriteLine(data);
+                        //**** Processing CSV *******
+                        ParserData parserData = new SimpleCSVParser().parse(filePath);
+                        totalInvalidRecords += parserData.totalInvalidCount;
+                        totalValidRecords += parserData.totalValidCount;
+                        foreach (string data in parserData.data)
+                        {
+                            sw.WriteLine(data);
+                        }
+                        //****** End processing of CSV *****
                     }
-                    //****** End processing of CSV *****
                 }
+                Program.log.Info("Total Invalid Records in Dir: " + totalInvalidRecords);
+                Program.log.Info("Total Valid Records in Dir: " + totalValidRecords);
+                Console.WriteLine("Total Valid Records in Dir: " + totalValidRecords);
+                Console.WriteLine("Total Invalid Records in Dir:" + totalInvalidRecords);
             }
-            Console.WriteLine("Total Invalid Records in Dir:" + totalInvalidRecords);
+            catch(Exception e)
+            {
+                Program.log.Error(e.Message);
+                Console.WriteLine(e.StackTrace);
+            }
         }
     }
 }

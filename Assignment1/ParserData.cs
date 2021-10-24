@@ -8,9 +8,11 @@ namespace Asg1
         public ParserData()
         {
             totalInvalidCount = 0;
+            totalValidCount = 0;
             data = new List<string>();
         }
         public int totalInvalidCount { get; set; }
+        public int totalValidCount { get; set; }
         public List<String> data { get; set; }
     }
 }
