@@ -37,10 +37,12 @@ namespace Asg1
                 int totalInvalidRecords = 0;
                 int totalValidRecords = 0;
                 Console.WriteLine("Total Files in Dir:" + this.allFileList.Count);
-                using (FileStream fs = new FileStream(@"C:\SMU\Software Developement\test.csv", FileMode.Append, FileAccess.Write))
+                String outputPath = System.IO.Path.GetFullPath(@"..\..\..\") + @"Output\finalOutput.csv";
+                System.IO.File.Delete(outputPath);
+                using (FileStream fs = new FileStream(outputPath, FileMode.Append, FileAccess.Write))
                 using (StreamWriter sw = new StreamWriter(fs))
                 {
-                    sw.WriteLine("First Name, Last Name, Street Number, Street, City, Province, Country, Postal Code, Phone Number, email Address");
+                    sw.WriteLine("First Name, Last Name, Street Number, Street, City, Province, Country, Postal Code, Phone Number, email Address, date");
                     foreach (string filePath in this.allFileList)
                     {
                         //**** Processing CSV *******
@@ -54,10 +56,11 @@ namespace Asg1
                         //****** End processing of CSV *****
                     }
                 }
-                Program.log.Info("Total Invalid Records in Dir: " + totalInvalidRecords);
+                Program.log.Info("All CSV files merged in single file successfully.");
+                Program.log.Info("Total number of skipped rows: " + totalInvalidRecords);
                 Program.log.Info("Total Valid Records in Dir: " + totalValidRecords);
                 Console.WriteLine("Total Valid Records in Dir: " + totalValidRecords);
-                Console.WriteLine("Total Invalid Records in Dir:" + totalInvalidRecords);
+                Console.WriteLine("Total number of skipped rows:" + totalInvalidRecords);
             }
             catch(Exception e)
             {

@@ -1,8 +1,6 @@
 ﻿using Microsoft.VisualBasic.FileIO;
 using System;
 using System.IO;
-using log4net;
-using log4net.Config;
 
 namespace Asg1
 {
@@ -28,11 +26,13 @@ namespace Asg1
                         bool isInvalidRecord = isRowValid(fields,out invalidFieldName);
                         if (isInvalidRecord)
                         {
-                            string log = "File Path:" + fileName + "\tFound Invalid value for field '" + invalidFieldName + "' for record number:" + rowCount;
+                            string log = "File Path:" + fileName + "\tFound Invalid value for field '" + invalidFieldName + "' at record number:" + rowCount;
                             Program.log.Info(log);
                             parserData.totalInvalidCount++;
                         } else 
                         {
+                            Array.Resize(ref fields, fields.Length + 1);
+                            fields[fields.Length - 1] = getDateFromPath(fileName);
                             parserData.totalValidCount++;
                             parserData.data.Add(string.Join(", ", fields));
                         }
@@ -70,6 +70,18 @@ namespace Asg1
         {
             String[] fieldNames = { "First Name", "Last Name", "Street Number", "Street", "City", "Province", "Country", "Postal Code", "Phone Number", "email Address" };
             return index < fieldNames.Length ? fieldNames[index] : string.Empty;
+        }
+
+        public string getDateFromPath(string filePath)
+        {
+            string[] dirName = filePath.Split('\\');
+            string day = dirName[dirName.Length - 2];
+            day = day.Length == 1 ? "0" + day : day;
+            string month = dirName[dirName.Length - 3];
+            month = month.Length == 1 ? "0" + month : month;
+            string year = dirName[dirName.Length - 4];
+            return year + "/" + month + "/" + day;
+
         }
     }
 }
