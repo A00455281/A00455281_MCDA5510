@@ -19,3 +19,6 @@ Following Data columns are available.
  First Name, Last Name, Street Number, Street, City, Province, Country, Postal Code, Phone Number, email Address, date
  
  Date field in csv file is in yyyy/mm/dd format.
+
+Currently I have used my local address for Sample Data. Please change this path to your sample data path.
+You  can change this path in Program.cs file - line 21.
